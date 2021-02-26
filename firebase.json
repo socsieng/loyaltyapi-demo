@@ -6,11 +6,20 @@
     ]
   },
   "hosting": {
-    "public": "public",
+    "predeploy": [
+      "cd www && npm run build"
+    ],
+    "public": "www/build",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }

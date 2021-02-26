@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="-200 -210 400 400">
+  <defs>
+    <linearGradient id="lid_shadow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.2" />
+      <stop offset="90%" stop-color="#000000" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="bow_gradient" x1="0" x2="0.1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="80%" stop-color="#000000" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.15" />
+    </linearGradient>
+  </defs>
+  
+    <clipPath id="bow_clip" transform="translate(-10 -120)">
+      <ellipse transform="rotate(30) translate(-10 10)" cx="0" cy="0" rx="77" ry="26" />
+      <ellipse transform="rotate(-60) translate(20 30)" cx="0" cy="0" rx="74" ry="47" />
+    </clipPath>
+
+  <rect fill="#ea001b" x="-128" y="-208" width="256" height="100" clip-path="url(#bow_clip)" />
+
+  <rect fill="#f79e1c" x="-128" y="-98" width="256" height="256" />
+  <rect fill="#f79e1c" x="-150" y="-108" width="300" height="64" />
+  <rect fill="#ea001b" x="-24" y="-108" width="48" height="266" />
+
+  <rect fill="url(#lid_shadow)" x="-128" y="-44" width="256" height="24" />
+  <g clip-path="url(#bow_clip)">
+    <rect fill="url(#bow_gradient)" x="-128" y="-162" width="256" height="54" />
+  </g>
+</svg>

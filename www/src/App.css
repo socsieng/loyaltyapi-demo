@@ -1,0 +1,28 @@
+.App {
+  background-color: #1e1e1e;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.Header {
+  padding: 10px 20px;
+  display: flex;
+}
+
+.Header .logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.Header .home {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 0.6rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.App-link {
+  color: #61dafb;
+}

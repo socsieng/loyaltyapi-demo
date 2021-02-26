@@ -1,0 +1,14 @@
+.Home {
+  text-align: center;
+}
+
+.Home .content {
+  width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.Home .logo {
+  height: 40vmin;
+  pointer-events: none;
+}
