@@ -18,28 +18,49 @@ async function main() {
   }
 
   const client = await getPassesClient();
-
-  await client.request({
-    url: 'https://walletobjects.googleapis.com/walletobjects/v1/loyaltyClass?strict=true',
-    method: 'POST',
-    body: JSON.stringify({
-      id: `${process.env.GOOGLE_PAY_ISSUER_ID}.number-one-rewards`,
-      issuerName: "Soc's Demo",
-      programName: 'Number One Rewards',
-      programLogo: { sourceUri: { uri: 'https://soc-loyaltyapi-demo.web.app/images/loyalty-icon.png' } },
-      reviewStatus: 'draft',
-      discoverableProgram: {
-        merchantSignupInfo: {
-          signupWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-up' },
-          signupSharedDatas: ['FIRST_NAME', 'LAST_NAME', 'EMAIL', 'PHONE'],
-        },
-        merchantSigninInfo: {
-          signinWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-in' },
-        },
+  const loyaltyProgram = {
+    id: `${process.env.GOOGLE_PAY_ISSUER_ID}.number-one-rewards`,
+    issuerName: "Soc's Demo",
+    programName: 'Number One Rewards',
+    programLogo: { sourceUri: { uri: 'https://soc-loyaltyapi-demo.web.app/images/logo.png' } },
+    reviewStatus: 'draft',
+    discoverableProgram: {
+      merchantSignupInfo: {
+        signupWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-up' },
+        signupSharedDatas: ['FIRST_NAME', 'LAST_NAME', 'EMAIL', 'PHONE'],
       },
-      countryCode: 'US',
-    }),
-  });
+      merchantSigninInfo: {
+        signinWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-in' },
+      },
+    },
+    countryCode: 'US',
+  };
+
+  let exists = false;
+
+  try {
+    const existingProgramRequest = await client.request({
+      url: `https://walletobjects.googleapis.com/walletobjects/v1/loyaltyClass/${loyaltyProgram.id}?strict=true'`,
+    });
+    console.log(existingProgramRequest.data);
+    exists = true;
+  } catch {
+    exists = false;
+  }
+
+  if (exists) {
+    await client.request({
+      url: `https://walletobjects.googleapis.com/walletobjects/v1/loyaltyClass/${loyaltyProgram.id}?strict=true'`,
+      method: 'PATCH',
+      body: JSON.stringify(loyaltyProgram),
+    });
+  } else {
+    await client.request({
+      url: 'https://walletobjects.googleapis.com/walletobjects/v1/loyaltyClass?strict=true',
+      method: 'POST',
+      body: JSON.stringify(loyaltyProgram),
+    });
+  }
 }
 
 main().catch(console.error);
