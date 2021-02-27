@@ -23,14 +23,14 @@ async function main() {
     issuerName: "Soc's Demo",
     programName: 'Number One Rewards',
     programLogo: { sourceUri: { uri: 'https://soc-loyaltyapi-demo.web.app/images/logo.png' } },
-    reviewStatus: 'draft',
+    reviewStatus: 'UNDER_REVIEW',
     discoverableProgram: {
       merchantSignupInfo: {
-        signupWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-up' },
-        signupSharedDatas: ['FIRST_NAME', 'LAST_NAME', 'EMAIL', 'PHONE'],
+        signupWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/api/loyalty/sign-up' },
+        signupSharedDatas: ['FIRST_NAME', 'LAST_NAME', 'EMAIL'],
       },
       merchantSigninInfo: {
-        signinWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/sign-in' },
+        signinWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/api/loyalty/sign-in' },
       },
     },
     countryCode: 'US',

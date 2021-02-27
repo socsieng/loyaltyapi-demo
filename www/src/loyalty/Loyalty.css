@@ -1,3 +1,55 @@
 .Loyalty {
-  text-align: center;
+  margin: 20px;
+}
+
+.Loyalty > section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.Loyalty fieldset {
+  border: none;
+}
+
+.Loyalty fieldset label.field {
+  display: block;
+  padding: 10px;
+  margin: 10px 0 10px;
+  border-radius: 5px;
+}
+
+.Loyalty fieldset label.field:focus-within {
+  background-color: #ffffff22;
+}
+
+.Loyalty fieldset label.field span.label {
+  display: block;
+  opacity: 0.8;
+}
+
+.Loyalty fieldset label.checkbox {
+  padding: 10px 15px;
+  display: flex;
+}
+
+.Loyalty fieldset label.checkbox input {
+  margin: 20px 10px 0 0;
+}
+
+.Loyalty fieldset label.field input[type='text'],
+.Loyalty fieldset label.field input[type='email'] {
+  width: 100%;
+  background-color: #ffffff00;
+  color: #ffffff;
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  margin: 2px 0;
+  outline-width: 0;
+  box-sizing: border-box;
+}
+
+.Loyalty .buttons {
+  text-align: right;
+  margin-top: 50px;
 }

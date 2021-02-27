@@ -1,9 +1,10 @@
 .Home {
   text-align: center;
+  margin: 20px;
 }
 
 .Home .content {
-  width: 800px;
+  width: 600px;
   margin: 0 auto;
   text-align: left;
 }

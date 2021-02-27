@@ -6,6 +6,8 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
@@ -23,6 +25,8 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'import'],
   rules: {
-    quotes: ['error', 'single'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'require-jsdoc': 'off',
+    'quotes': ['error', 'single'],
   },
 };
