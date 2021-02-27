@@ -19,9 +19,9 @@ async function main() {
 
   const client = await getPassesClient();
   const loyaltyProgram = {
-    id: `${process.env.GOOGLE_PAY_ISSUER_ID}.number-one-rewards`,
+    id: `${process.env.GOOGLE_PAY_ISSUER_ID}.first-rewards`,
     issuerName: "Soc's Demo",
-    programName: 'Number One Rewards',
+    programName: 'First Rewards',
     programLogo: { sourceUri: { uri: 'https://soc-loyaltyapi-demo.web.app/images/logo.png' } },
     reviewStatus: 'UNDER_REVIEW',
     discoverableProgram: {

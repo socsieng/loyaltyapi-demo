@@ -7,6 +7,7 @@ import * as functions from 'firebase-functions';
 const router = express.Router();
 
 router.post('/sign-up', signUp);
+router.post('/sign-in', signIn);
 router.post('/jwt', createJwt);
 
 function signUp(req: express.Request, res: express.Response) {
@@ -19,6 +20,17 @@ function signUp(req: express.Request, res: express.Response) {
   });
 
   res.redirect(`/sign-up?${query}`);
+}
+
+function signIn(req: express.Request, res: express.Response) {
+  const { userProfile } = req.body;
+  const jwt = JSON.parse(Buffer.from(userProfile, 'base64').toString('utf8'));
+  const { email } = jwt;
+  const query = qs.stringify({
+    email,
+  });
+
+  res.redirect(`/sign-in?${query}`);
 }
 
 function createJwt(req: express.Request, res: express.Response) {
@@ -35,6 +47,7 @@ function createJwt(req: express.Request, res: express.Response) {
   const website = firebaseConfig.loyalty?.website ?? process.env.LOYALT_WEBSITE;
   const { name, email } = req.body;
   const memberId = email;
+  const loyaltyProgram = 'first-rewards';
 
   const claims = {
     aud: 'google',
@@ -55,7 +68,7 @@ function createJwt(req: express.Request, res: express.Response) {
               {
                 kind: 'walletobjects#uri',
                 uri: `${website}/members/${encodeURIComponent(memberId)}`,
-                description: 'Number One Reward Account',
+                description: 'First Rewards Account',
               },
             ],
           },
@@ -76,7 +89,7 @@ function createJwt(req: express.Request, res: express.Response) {
             ],
             showLastUpdateTime: 'false',
           },
-          id: `${issuerId}.${memberId.replace(/@/g, '_at_').replace(/\+/g, '_plus_')}-number-one-rewards`,
+          id: `${issuerId}.${memberId.replace(/@/g, '_at_').replace(/\+/g, '_plus_')}-${loyaltyProgram}`,
           loyaltyPoints: {
             balance: {
               string: '0',
@@ -84,13 +97,13 @@ function createJwt(req: express.Request, res: express.Response) {
             label: 'Points',
           },
           accountId: memberId,
-          classId: `${issuerId}.number-one-rewards`,
+          classId: `${issuerId}.${loyaltyProgram}`,
           accountName: name,
           state: 'active',
           version: 1,
           textModulesData: [
             {
-              body: 'Welcome to the Number One Rewards program',
+              body: 'New member',
               header: 'Reward status',
             },
           ],
