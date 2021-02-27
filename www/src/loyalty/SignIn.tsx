@@ -6,7 +6,7 @@ function SignIn() {
   const location = useLocation();
   const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const [name, setName] = useState(query.get('name') ?? '');
-  const email = query.get('email');
+  const [email, setEmail] = useState(query.get('email') ?? '');
 
   async function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,6 +41,17 @@ function SignIn() {
                 required
                 autoComplete="name"
                 placeholder="Enter name..."
+              />
+            </label>
+            <label className="field">
+              <span className="label">Email address</span>
+              <input
+                type="email"
+                value={email}
+                onChange={event => setEmail(event.target.value)}
+                required
+                autoComplete="email"
+                placeholder="Enter email address..."
               />
             </label>
             <div className="buttons">
