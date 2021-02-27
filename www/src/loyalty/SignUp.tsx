@@ -37,9 +37,10 @@ function SignUp() {
               <span className="label">Name</span>
               <input
                 type="text"
-                defaultValue={name}
-                onBlur={event => setName(event.target.value)}
+                value={name}
+                onChange={event => setName(event.target.value)}
                 required
+                autoComplete="name"
                 placeholder="Enter name..."
               />
             </label>
@@ -47,9 +48,10 @@ function SignUp() {
               <span className="label">Email address</span>
               <input
                 type="email"
-                defaultValue={email}
-                onBlur={event => setEmail(event.target.value)}
+                value={email}
+                onChange={event => setEmail(event.target.value)}
                 required
+                autoComplete="email"
                 placeholder="Enter email address..."
               />
             </label>

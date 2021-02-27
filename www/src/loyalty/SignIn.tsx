@@ -36,9 +36,10 @@ function SignIn() {
               <span className="label">Name</span>
               <input
                 type="text"
-                defaultValue={name}
-                onBlur={event => setName(event.target.value)}
+                value={name}
+                onChange={event => setName(event.target.value)}
                 required
+                autoComplete="name"
                 placeholder="Enter name..."
               />
             </label>

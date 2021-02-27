@@ -49,6 +49,10 @@
   box-sizing: border-box;
 }
 
+.Loyalty input:-webkit-autofill::first-line {
+  font-size: 1.2rem;
+}
+
 .Loyalty .buttons {
   text-align: right;
   margin-top: 50px;
