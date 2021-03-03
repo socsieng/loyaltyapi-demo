@@ -49,7 +49,7 @@ function createJwt(req: express.Request, res: express.Response) {
   const website = firebaseConfig.loyalty?.website ?? process.env.LOYALTY_WEBSITE;
   const { name, email } = req.body;
   const memberId = email;
-  const loyaltyProgram = 'first-rewards';
+  const loyaltyProgram = 'gpay-rewards';
 
   const claims = {
     aud: 'google',
@@ -70,7 +70,7 @@ function createJwt(req: express.Request, res: express.Response) {
               {
                 kind: 'walletobjects#uri',
                 uri: `${website}/members/${encodeURIComponent(memberId)}`,
-                description: 'First Rewards Account',
+                description: 'GPay Rewards Account',
               },
             ],
           },

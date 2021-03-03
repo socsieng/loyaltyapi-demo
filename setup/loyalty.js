@@ -16,21 +16,25 @@ async function main() {
     console.error('GOOGLE_PAY_ISSUER_ID must be set.');
     return;
   }
+  if (!process.env.LOYALTY_WEBSITE) {
+    console.error('LOYALTY_WEBSITE must be set.');
+    return;
+  }
 
   const client = await getPassesClient();
   const loyaltyProgram = {
-    id: `${process.env.GOOGLE_PAY_ISSUER_ID}.first-rewards`,
-    issuerName: "Soc's Demo",
-    programName: 'First Rewards',
-    programLogo: { sourceUri: { uri: 'https://soc-loyaltyapi-demo.web.app/images/logo.png' } },
+    id: `${process.env.GOOGLE_PAY_ISSUER_ID}.gpay-rewards`,
+    issuerName: 'GPay Demo',
+    programName: 'GPay Demo Rewards',
+    programLogo: { sourceUri: { uri: `${process.env.LOYALTY_WEBSITE}/images/logo.png` } },
     reviewStatus: 'UNDER_REVIEW',
     discoverableProgram: {
       merchantSignupInfo: {
-        signupWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/api/loyalty/sign-up' },
+        signupWebsite: { uri: `${process.env.LOYALTY_WEBSITE}/api/loyalty/sign-up` },
         signupSharedDatas: ['FIRST_NAME', 'LAST_NAME', 'EMAIL'],
       },
       merchantSigninInfo: {
-        signinWebsite: { uri: 'https://soc-loyaltyapi-demo.web.app/api/loyalty/sign-in' },
+        signinWebsite: { uri: `${process.env.LOYALTY_WEBSITE}/api/loyalty/sign-in` },
       },
     },
     countryCode: 'US',
