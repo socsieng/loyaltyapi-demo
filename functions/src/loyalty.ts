@@ -17,6 +17,7 @@ function signUp(req: express.Request, res: express.Response) {
   const query = qs.stringify({
     name: [firstName, lastName].filter(n => n).join(' '),
     email,
+    source: 'discoverable',
   });
 
   res.redirect(`/sign-up?${query}`);
@@ -28,6 +29,7 @@ function signIn(req: express.Request, res: express.Response) {
   const { email } = jwt;
   const query = qs.stringify({
     email,
+    source: 'discoverable',
   });
 
   res.redirect(`/sign-in?${query}`);
@@ -44,7 +46,7 @@ function createJwt(req: express.Request, res: express.Response) {
 
   // eslint-disable-next-line camelcase
   const issuerId = firebaseConfig.loyalty?.issuer_id ?? process.env.GOOGLE_PAY_ISSUER_ID;
-  const website = firebaseConfig.loyalty?.website ?? process.env.LOYALT_WEBSITE;
+  const website = firebaseConfig.loyalty?.website ?? process.env.LOYALTY_WEBSITE;
   const { name, email } = req.body;
   const memberId = email;
   const loyaltyProgram = 'first-rewards';
