@@ -1,15 +1,26 @@
 const { GoogleAuth } = require('google-auth-library');
 
 async function getPassesClient() {
-  const auth = new GoogleAuth({
+  /** @type {import('google-auth-library').GoogleAuthOptions} */
+  const authOptions = {
     scopes: 'https://www.googleapis.com/auth/wallet_object.issuer',
-  });
+  };
+
+  const envCredentials = process.env.GCP_CREDENTIALS;
+  if (envCredentials) {
+    authOptions.keyFile = envCredentials;
+  }
+  if (envCredentials.startsWith('{')) {
+    authOptions.credentials = JSON.parse(envCredentials);
+  }
+
+  const auth = new GoogleAuth(authOptions);
   return await auth.getClient();
 }
 
 async function main() {
-  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    console.error('GOOGLE_APPLICATION_CREDENTIALS must be set.');
+  if (!process.env.GCP_CREDENTIALS) {
+    console.error('GCP_CREDENTIALS must be set.');
     return;
   }
   if (!process.env.GOOGLE_PAY_ISSUER_ID) {

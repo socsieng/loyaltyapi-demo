@@ -23,3 +23,5 @@ cd $script_folder/../www \
 # install firebase functions dependencies
 cd $script_folder/../functions \
   && npm install
+
+firebase login

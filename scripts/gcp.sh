@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script initializes 
+# This script downloads the service account key from GCP
 
 set -e
 
@@ -16,9 +16,15 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 GRAY='\033[1;30m'
 
+if [ -f "./key.json" ]
+then
+  echo -e "Service account key already exists: ${GREEN}`realpath ./key.json`${NONE}"
+  exit
+fi
+
 if [ -z "$gcp_project" ]
 then
-  >&2 echo -e "${RED}ERROR:${NONE} GCP project not specified."
+  >&2 echo -e "${RED}ERROR:${NONE} GCP project not specified"
   >&2 echo -e "  usage: gcp.sh <project-name> [folder-id]"
   exit 1
 fi
@@ -28,9 +34,7 @@ gcp_account=`gcloud auth list --format="value(account)" --filter="status:ACTIVE"
 
 if [ -z "$gcp_account" ]
 then
-  >&2 echo -e "${RED}ERROR:${NONE} not currently logged into gcloud."
-  >&2 echo -e "  log in with the following command: gcloud auth login"
-  exit 1
+  gcloud auth login
 fi
 
 gcp_project_number=`gcloud projects list --format="value(projectNumber)" --filter="projectId:$gcp_project" 2>/dev/null`
@@ -45,9 +49,9 @@ then
   then
     if [ -z "$gcp_folder" ]
     then
-      echo -e "Creating project $gcp_project."
+      echo -e "Creating project $gcp_project"
     else
-      echo -e "Creating project $gcp_project (in folder $gcp_folder)."
+      echo -e "Creating project $gcp_project (in folder $gcp_folder)"
     fi
 
     gcloud projects create $gcp_project --folder=$gcp_folder
@@ -63,7 +67,13 @@ gcp_service_account=`gcloud iam service-accounts list --project=$gcp_project --f
 
 if [ -z "$gcp_service_account" ]
 then
-  echo -e "Creating service account $gcp_service_account_email."
+  echo -e "Creating service account ${GREEN}$gcp_service_account_email${NONE}"
   gcloud iam service-accounts create $gcp_service_account_name --project=$gcp_project
-  gcloud iam service-accounts keys create ./key.json --iam-account=$gcp_service_account_email --project=$gcp_project
 fi
+
+# create/save service account key
+gcloud iam service-accounts keys create ./key.json --iam-account=$gcp_service_account_email --project=$gcp_project
+echo -e "Service account key saved to ${GREEN}`realpath ./key.json`${NONE}"
+
+# enable Passes API
+gcloud services enable walletobjects.googleapis.com --project=$gcp_project

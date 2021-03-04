@@ -40,9 +40,7 @@ function createJwt(req: express.Request, res: express.Response) {
 
   const credentials = firebaseConfig.loyalty?.credentials
     ? firebaseConfig.loyalty.credentials
-    : // eslint-disable-next-line @typescript-eslint/no-var-requires
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      require(process.env.GOOGLE_APPLICATION_CREDENTIALS!);
+    : getCredentialsFromEnvironmentVariable();
 
   // eslint-disable-next-line camelcase
   const issuerId = firebaseConfig.loyalty?.issuer_id ?? process.env.GOOGLE_PAY_ISSUER_ID;
@@ -118,6 +116,17 @@ function createJwt(req: express.Request, res: express.Response) {
   res.send({
     token,
   });
+}
+
+function getCredentialsFromEnvironmentVariable() {
+  const envCredentials = process.env.GCP_CREDENTIALS;
+  if (!envCredentials) {
+    throw new Error('GCP_CREDENTIALS environment variable is empty.');
+  }
+  if (envCredentials.startsWith('{')) {
+    return JSON.parse(envCredentials);
+  }
+  return require(envCredentials);
 }
 
 export const loyaltyRoutes = router;
