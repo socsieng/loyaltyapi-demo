@@ -10,6 +10,7 @@ In order to run this application, ensure that you have the following prerequisit
 
 1. [Node.js][nodejs] 10 or later installed.
 2. Google Cloud Platform (GCP) service account and download the service account key.
+   - _Optional_ (if [`gcloud`][install_gcloud] is installed): run `scripts/gcp.sh <project-name> [folder-id]`
 3. Have a [Google Pay `issuer_id`](issuers) ([sign up for access][passes_signup]).
 4. Grant `edit` access to the shared account.
 5. Copy `.env_sample` to `.env`.
@@ -33,3 +34,4 @@ scripts/serve.sh
 [nodejs]: https://nodejs.org/
 [issuers]: https://pay.google.com/gp/m/issuer/list
 [passes_signup]: https://support.google.com/pay/merchants/contact/instore_merchant
+[install_gcloud]: https://cloud.google.com/sdk/docs/install
