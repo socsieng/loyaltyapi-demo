@@ -36,6 +36,13 @@
   margin: 20px 10px 0 0;
 }
 
+.Loyalty fieldset label.checkbox input[type='checkbox'] {
+  width: 20px;
+  min-width: 20px;
+  background-color: #fff;
+  box-sizing: content-box;
+}
+
 .Loyalty fieldset label.field input[type='text'],
 .Loyalty fieldset label.field input[type='email'] {
   width: 100%;
@@ -47,6 +54,10 @@
   margin: 2px 0;
   outline-width: 0;
   box-sizing: border-box;
+  -webkit-appearance: none;
+  border-radius: 0;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .Loyalty input:-webkit-autofill::first-line {
@@ -55,5 +66,5 @@
 
 .Loyalty .buttons {
   text-align: right;
-  margin-top: 50px;
+  margin-top: 20px;
 }
