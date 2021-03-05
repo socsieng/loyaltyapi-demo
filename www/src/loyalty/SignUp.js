@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Loyalty.css';
 import SaveToGooglePayButton from './SaveToGooglePayButton';
@@ -9,10 +9,10 @@ function SignUp() {
   const [name, setName] = useState(query.get('name') ?? '');
   const [email, setEmail] = useState(query.get('email') ?? '');
   const [terms, setTerms] = useState(false);
-  const [jwt, setJwt] = useState<string | undefined>();
+  const [jwt, setJwt] = useState();
   const shouldRedirect = query.get('source') === 'discoverable';
 
-  async function submitHandler(event: FormEvent<HTMLFormElement>) {
+  async function submitHandler(event) {
     event.preventDefault();
     const result = await fetch('/api/loyalty/jwt', {
       method: 'POST',

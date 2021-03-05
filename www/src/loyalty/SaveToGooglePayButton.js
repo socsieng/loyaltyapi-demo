@@ -2,12 +2,8 @@ import { useEffect, useRef } from 'react';
 import { loadScript } from '../utils/load-script';
 import './Loyalty.css';
 
-interface Props {
-  jwt: string;
-}
-
-function SaveToGooglePayButton({ jwt }: Props) {
-  const divRef = useRef<HTMLDivElement>(null);
+function SaveToGooglePayButton({ jwt }) {
+  const divRef = useRef(null);
 
   useEffect(() => {
     (async () => {

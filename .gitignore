@@ -67,3 +67,5 @@ node_modules/
 
 credentials.json
 key.json
+
+.DS_Store

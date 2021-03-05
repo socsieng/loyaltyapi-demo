@@ -1,9 +1,0 @@
-**/node_modules/
-**/npm-debug.log
-
-**/build
-
-.firebase/
-
-credentials.json
-key.json
