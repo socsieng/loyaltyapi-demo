@@ -1,8 +1,7 @@
 # Google Pay Loyalty API Demo
 
 This repository contains a [Google Loyalty API][passes] demo application with the front-end built using
-`create-react-app` and the back-end implemented with [Node.js][nodejs] and hosted with Firebase Functions; both written
-with TypeScript.
+`create-react-app` and the back-end implemented with [Node.js][nodejs] and hosted with Firebase Functions.
 
 ## Before you start
 

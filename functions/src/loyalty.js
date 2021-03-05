@@ -1,7 +1,7 @@
-import express from 'express';
-import qs from 'querystring';
-import jwt from 'jsonwebtoken';
-import * as functions from 'firebase-functions';
+const express = require('express');
+const qs = require('querystring');
+const jwt = require('jsonwebtoken');
+const functions = require('firebase-functions');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -10,7 +10,7 @@ router.post('/sign-up', signUp);
 router.post('/sign-in', signIn);
 router.post('/jwt', createJwt);
 
-function signUp(req: express.Request, res: express.Response) {
+function signUp(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
   const { userProfile } = req.body;
   const jwt = JSON.parse(Buffer.from(userProfile, 'base64').toString('utf8'));
   const { firstName, lastName, email } = jwt;
@@ -23,7 +23,7 @@ function signUp(req: express.Request, res: express.Response) {
   res.redirect(`/sign-up?${query}`);
 }
 
-function signIn(req: express.Request, res: express.Response) {
+function signIn(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
   const { userProfile } = req.body;
   const jwt = JSON.parse(Buffer.from(userProfile, 'base64').toString('utf8'));
   const { email } = jwt;
@@ -35,16 +35,16 @@ function signIn(req: express.Request, res: express.Response) {
   res.redirect(`/sign-in?${query}`);
 }
 
-function createJwt(req: express.Request, res: express.Response) {
-  const firebaseConfig = functions.config();
+function createJwt(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+  const firebaseConfig = Object.assign({ loyalty: {} }, functions.config());
 
-  const credentials = firebaseConfig.loyalty?.credentials
+  const credentials = firebaseConfig.loyalty.credentials
     ? firebaseConfig.loyalty.credentials
     : getCredentialsFromEnvironmentVariable();
 
   // eslint-disable-next-line camelcase
-  const issuerId = firebaseConfig.loyalty?.issuer_id ?? process.env.GOOGLE_PAY_ISSUER_ID;
-  const website = firebaseConfig.loyalty?.website ?? process.env.LOYALTY_WEBSITE;
+  const issuerId = firebaseConfig.loyalty.issuer_id || process.env.GOOGLE_PAY_ISSUER_ID;
+  const website = firebaseConfig.loyalty.website || process.env.LOYALTY_WEBSITE;
   const { name, email } = req.body;
   const memberId = email;
   const loyaltyProgram = 'gpay-rewards';
@@ -129,4 +129,4 @@ function getCredentialsFromEnvironmentVariable() {
   return require(envCredentials);
 }
 
-export const loyaltyRoutes = router;
+exports.loyaltyRoutes = router;

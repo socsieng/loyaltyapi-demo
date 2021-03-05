@@ -1,7 +1,7 @@
-import express from 'express';
-import * as functions from 'firebase-functions';
-import * as bodyParser from 'body-parser';
-import { loyaltyRoutes } from './loyalty';
+const express = require('express');
+const functions = require('firebase-functions');
+const bodyParser = require('body-parser');
+const { loyaltyRoutes } = require('./loyalty');
 
 const app = express();
 
@@ -20,4 +20,4 @@ Object.entries(routers).forEach(([path, router]) => {
   app.use(`/api${path}`, router);
 });
 
-export const api = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(app);

@@ -25,10 +25,6 @@ fi
 cd $script_folder/../www \
   && npm run build
 
-# build firebase functions
-cd $script_folder/../functions \
-  && npm run build
-
 # check environment variables are defined
 if [ -z "$GCP_CREDENTIALS" ]
 then
