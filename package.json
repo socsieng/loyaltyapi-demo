@@ -4,12 +4,8 @@
   "version": "0.0.1",
   "description": "Google Loyalty API demo application and code sample",
   "main": "index.js",
-  "dependencies": {
-    "eslint-config-prettier": "^8.1.0",
-    "google-auth-library": "^7.0.2",
-    "jsonwebtoken": "^8.5.1"
-  },
   "devDependencies": {
+    "eslint-config-prettier": "^8.1.0",
     "prettier": "^2.2.1"
   },
   "scripts": {
