@@ -1,0 +1,28 @@
+{
+  "name": "gpay-loyaltyapi-demo",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Google Loyalty API demo application and code sample",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-prettier": "^8.1.0",
+    "google-auth-library": "^7.0.2",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/google-pay/gpay-loyaltyapi-demo.git"
+  },
+  "author": "socsieng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/google-pay/gpay-loyaltyapi-demo/issues"
+  },
+  "homepage": "https://github.com/google-pay/gpay-loyaltyapi-demo#readme"
+}
