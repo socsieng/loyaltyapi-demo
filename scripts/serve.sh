@@ -11,6 +11,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 GRAY='\033[1;30m'
 
+port=${PORT:-"8080"}
+
 # load .env variables if they exist
 if [ -f .env ]
 then
@@ -48,4 +50,4 @@ then
   echo -e "${YELLOW}WARNING:${NONE} LOYALTY_WEBSITE environment variable is empty"
 fi
 
-firebase serve
+firebase serve --port $port

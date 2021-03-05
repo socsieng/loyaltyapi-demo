@@ -28,8 +28,8 @@ firebase projects:addfirebase my-google-cloud-project-id
 # serve firebase application
 scripts/serve.sh
 
-# application will run on http://localhost:5000 by default
-# open http://localhost:5000/sign-up in the browser to start testing.
+# application will run on http://localhost:8080 by default
+# open http://localhost:8080/sign-up in the browser to start testing.
 ```
 
 ## Google Cloud Platform configuration
