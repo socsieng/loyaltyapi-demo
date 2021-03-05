@@ -24,4 +24,4 @@ cd $script_folder/../www \
 cd $script_folder/../functions \
   && npm install
 
-firebase login
+firebase login --no-localhost
