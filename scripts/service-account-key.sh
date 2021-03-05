@@ -25,7 +25,7 @@ fi
 if [ -z "$gcp_project" ]
 then
   >&2 echo -e "${RED}ERROR:${NONE} GCP project not specified"
-  >&2 echo -e "  usage: gcp.sh <project-id> [folder-id]"
+  >&2 echo -e "  usage: service-account-key.sh <project-id> [folder-id]"
   exit 1
 fi
 

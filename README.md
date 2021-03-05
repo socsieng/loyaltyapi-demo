@@ -44,10 +44,10 @@ For convenience, a script is included in this repository that will automate the 
 service account key (note that [`gcloud` Google Cloud SDK][install_gcloud] must be installed for the script to work).
 
 ```sh
-# usage: scripts/gcp.sh <project-id> [folder-id]
+# usage: scripts/service-account-key.sh <project-id> [folder-id]
 
 # example
-scripts/gcp.sh my-google-cloud-project-id
+scripts/service-account-key.sh my-google-cloud-project-id
 ```
 
 ### [Google Cloud Console][gcp_console]
