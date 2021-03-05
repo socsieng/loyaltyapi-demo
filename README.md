@@ -19,11 +19,16 @@ In order to run this application, ensure that you have the following prerequisit
 ## Getting started
 
 ```sh
+# replace my-google-cloud-project-id with your GCP project id
+MY_PROJECT=my-google-cloud-project-id
+
 # one off setup step
 scripts/setup.sh
 
-# configure firebase - replace my-google-cloud-project-id with your GCP project id
-firebase projects:addfirebase my-google-cloud-project-id
+# configure firebase
+firebase login
+firebase projects:addfirebase $MY_PROJECT
+firebase use $MY_PROJECT
 
 # serve firebase application
 scripts/serve.sh
