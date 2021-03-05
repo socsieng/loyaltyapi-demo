@@ -25,7 +25,7 @@ fi
 if [ -z "$gcp_project" ]
 then
   >&2 echo -e "${RED}ERROR:${NONE} GCP project not specified"
-  >&2 echo -e "  usage: gcp.sh <project-name> [folder-id]"
+  >&2 echo -e "  usage: gcp.sh <project-id> [folder-id]"
   exit 1
 fi
 
@@ -42,6 +42,13 @@ gcp_project_number=`gcloud projects list --format="value(projectNumber)" --filte
 # check if project exists, optionally create project
 if [ -z "$gcp_project_number" ]
 then
+  if [[ ! $gcp_project =~ ^[a-z][-a-z0-9]{4,28}[a-z0-9]$ ]]
+  then
+    >&2 echo -e "${RED}ERROR:${NONE} GCP project id must be between 6 and 30 characters."
+    >&2 echo -e "  project id can have lowercase letters, digits, or hyphens. It must start with a lowercase letter and end with a letter or number."
+    exit 1
+  fi
+
   prompt=`echo -e "Project $gcp_project does not exist. Create ${GRAY}(y/N)${NONE}? "`
   read -p "$prompt" response
 

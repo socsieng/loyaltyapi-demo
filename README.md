@@ -22,6 +22,9 @@ In order to run this application, ensure that you have the following prerequisit
 # one off setup step
 scripts/setup.sh
 
+# configure firebase - replace my-google-cloud-project-id with your GCP project id
+firebase projects:addfirebase my-google-cloud-project-id
+
 # serve firebase application
 scripts/serve.sh
 
@@ -37,38 +40,14 @@ Configuration involves the following steps:
 2. Create and download the service account key
 3. Enable the Google Pay Passes API
 
-A couple of scripts are made available to help streamline the configuration process depending on the tools that you have
-installed or are able to install.
-
-Tools:
-
-- [Google Cloud SDK](#Google-Cloud-SDK), or
-- [Docker](#Docker)
-
-### [Google Cloud SDK][install_gcloud]
-
-This is the recommended configuration script which uses `gcloud` ([Google Cloud SDK][install_gcloud]):
+For convenience, a script is included in this repository that will automate the creation of the service account and
+service account key (note that [`gcloud` Google Cloud SDK][install_gcloud] must be installed for the script to work).
 
 ```sh
-# usage: scripts/gcp.sh <project-name> [folder-id]
+# usage: scripts/gcp.sh <project-id> [folder-id]
 
 # example
-scripts/gcp.sh my-google-cloud-project-name
-```
-
-### [Docker][docker]
-
-As an alternative to installing `gcloud`, the following script run `gcloud` using a Docker container:
-
-```sh
-# usage: scripts/gcp-docker.sh <project-name> [folder-id]
-
-# example
-scripts/gcp-docker.sh my-google-cloud-project-name
-
-# note that you will be prompted to open a link in the browser
-# follow the link, login, and authorize the application
-# and finally copy/paste the verification code into your terminal window
+scripts/gcp.sh my-google-cloud-project-id
 ```
 
 ### [Google Cloud Console][gcp_console]
