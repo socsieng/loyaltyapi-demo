@@ -8,7 +8,7 @@ function Home() {
       <h1>Google Pay Loyalty API Demo</h1>
       <section className="content">
         <p>
-          This ample site is used to demonstrate how to integrate with the Google Pay Loyalty APIs to save a loyalty
+          This sample site is used to demonstrate how to integrate with the Google Pay Loyalty APIs to save a loyalty
           pass to Google Pay. This site will also handle Enrollment and Sign in request for a seamless sign up
           experience when triggered from Google surfaces like Google Pay.
         </p>
