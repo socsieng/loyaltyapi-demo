@@ -9,6 +9,18 @@
   border-radius: 5px;
 }
 
+.App .warn {
+  background-color: #5c4c00;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.App .error {
+  background-color: #850000;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
 .Header {
   padding: 10px 20px;
   display: flex;

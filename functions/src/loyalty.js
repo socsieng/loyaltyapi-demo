@@ -1,16 +1,17 @@
 const express = require('express');
 const qs = require('querystring');
 const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
 const config = require('./config');
 const { buildLoyaltyObject, updateLoyaltyPoints, getLoyaltyId } = require('./services/loyalty-service');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-router.post('/sign-up', signUp);
-router.post('/sign-in', signIn);
-router.post('/jwt', createJwt);
-router.post('/:memberId/points', updatePoints);
+router.post('/sign-up', asyncHandler(signUp));
+router.post('/sign-in', asyncHandler(signIn));
+router.post('/jwt', asyncHandler(createJwt));
+router.post('/:memberId/points', asyncHandler(updatePoints));
 
 function signUp(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
   const { userProfile } = req.body;
