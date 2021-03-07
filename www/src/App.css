@@ -3,6 +3,12 @@
   color: #fff;
 }
 
+.App .info {
+  background-color: #074300;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
 .Header {
   padding: 10px 20px;
   display: flex;

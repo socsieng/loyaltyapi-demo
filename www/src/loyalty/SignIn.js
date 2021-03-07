@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Loyalty.css';
 
@@ -8,7 +8,7 @@ function SignIn() {
   const [name, setName] = useState(query.get('name') ?? '');
   const [email, setEmail] = useState(query.get('email') ?? '');
 
-  async function submitHandler(event: FormEvent<HTMLFormElement>) {
+  async function submitHandler(event) {
     event.preventDefault();
     const result = await fetch('/api/loyalty/jwt', {
       method: 'POST',

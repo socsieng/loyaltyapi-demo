@@ -44,6 +44,8 @@
 }
 
 .Loyalty fieldset label.field input[type='text'],
+.Loyalty fieldset label.field input[type='tel'],
+.Loyalty fieldset label.field input[type='number'],
 .Loyalty fieldset label.field input[type='email'] {
   width: 100%;
   background-color: #ffffff00;

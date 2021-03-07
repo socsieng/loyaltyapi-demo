@@ -21,6 +21,9 @@ function Home() {
           <li>
             <Link to="/sign-in">Loyalty sign-in</Link>
           </li>
+          <li>
+            <Link to="/rewards">Loyalty rewards</Link>
+          </li>
         </ul>
       </section>
     </div>

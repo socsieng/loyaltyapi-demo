@@ -2,6 +2,7 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './Header';
 import Home from './home/Home';
+import Rewards from './loyalty/Rewards';
 import SignIn from './loyalty/SignIn';
 import SignUp from './loyalty/SignUp';
 
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route exact path="/sign-up">
           <SignUp />
+        </Route>
+        <Route exact path="/rewards">
+          <Rewards />
         </Route>
       </Switch>
     </div>

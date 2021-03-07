@@ -1,7 +1,8 @@
 const express = require('express');
 const qs = require('querystring');
 const jwt = require('jsonwebtoken');
-const functions = require('firebase-functions');
+const config = require('./config');
+const { buildLoyaltyObject, updateLoyaltyPoints, getLoyaltyId } = require('./services/loyalty-service');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -9,6 +10,7 @@ const router = express.Router();
 router.post('/sign-up', signUp);
 router.post('/sign-in', signIn);
 router.post('/jwt', createJwt);
+router.post('/:memberId/points', updatePoints);
 
 function signUp(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
   const { userProfile } = req.body;
@@ -36,18 +38,8 @@ function signIn(/** @type {express.Request} */ req, /** @type {express.Response}
 }
 
 function createJwt(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
-  const firebaseConfig = Object.assign({ loyalty: {} }, functions.config());
-
-  const credentials = firebaseConfig.loyalty.credentials
-    ? firebaseConfig.loyalty.credentials
-    : getCredentialsFromEnvironmentVariable();
-
-  // eslint-disable-next-line camelcase
-  const issuerId = firebaseConfig.loyalty.issuer_id || process.env.GOOGLE_PAY_ISSUER_ID;
-  const website = firebaseConfig.loyalty.website || process.env.LOYALTY_WEBSITE;
+  const { credentials, website } = config;
   const { name, email } = req.body;
-  const memberId = email;
-  const loyaltyProgram = 'gpay-rewards';
 
   const claims = {
     aud: 'google',
@@ -56,59 +48,7 @@ function createJwt(/** @type {express.Request} */ req, /** @type {express.Respon
     iat: Math.floor(new Date().valueOf() / 1000),
     typ: 'savetowallet',
     payload: {
-      loyaltyObjects: [
-        {
-          barcode: {
-            alternateText: email,
-            type: 'qrCode',
-            value: email,
-          },
-          linksModuleData: {
-            uris: [
-              {
-                kind: 'walletobjects#uri',
-                uri: `${website}/members/${encodeURIComponent(memberId)}`,
-                description: 'GPay Rewards Account',
-              },
-            ],
-          },
-          infoModuleData: {
-            labelValueRows: [
-              {
-                columns: [
-                  {
-                    value: name,
-                    label: 'Name',
-                  },
-                  {
-                    value: memberId,
-                    label: 'Email',
-                  },
-                ],
-              },
-            ],
-            showLastUpdateTime: 'false',
-          },
-          id: `${issuerId}.${memberId.replace(/@/g, '_at_').replace(/\+/g, '_plus_')}-${loyaltyProgram}`,
-          loyaltyPoints: {
-            balance: {
-              string: '0',
-            },
-            label: 'Points',
-          },
-          accountId: memberId,
-          classId: `${issuerId}.${loyaltyProgram}`,
-          accountName: name,
-          state: 'active',
-          version: 1,
-          textModulesData: [
-            {
-              body: 'New member',
-              header: 'Reward status',
-            },
-          ],
-        },
-      ],
+      loyaltyObjects: [buildLoyaltyObject(name, email, '0')],
     },
   };
   const token = jwt.sign(claims, credentials.private_key, { algorithm: 'RS256' });
@@ -118,15 +58,16 @@ function createJwt(/** @type {express.Request} */ req, /** @type {express.Respon
   });
 }
 
-function getCredentialsFromEnvironmentVariable() {
-  const envCredentials = process.env.GCP_CREDENTIALS;
-  if (!envCredentials) {
-    throw new Error('GCP_CREDENTIALS environment variable is empty.');
-  }
-  if (envCredentials.startsWith('{')) {
-    return JSON.parse(envCredentials);
-  }
-  return require(envCredentials);
+async function updatePoints(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+  const { memberId } = req.params;
+  const { points } = req.body;
+  await updateLoyaltyPoints(memberId, points);
+
+  res.send({
+    id: getLoyaltyId(memberId),
+    memberId,
+    points,
+  });
 }
 
 exports.loyaltyRoutes = router;
