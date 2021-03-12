@@ -60,15 +60,21 @@ async function updateLoyaltyPoints(email, points) {
   const client = new PassesClient();
   const loyaltyId = getLoyaltyId(email);
 
-  // Step 1: update loyaltyPoints for the loyaltyObject identified by loyaltyId
-  await client.patch(`https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/${loyaltyId}`, {
+  // Step 1: define fields that require updating
+  const loyaltyObjectUpdate = {
     id: loyaltyId,
     loyaltyPoints: {
       balance: {
         int: points,
       },
     },
-  });
+  };
+
+  // Step 2: call REST API to update points
+  await client.patch(
+    `https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/${loyaltyId}`,
+    loyaltyObjectUpdate,
+  );
 }
 
 module.exports = {
