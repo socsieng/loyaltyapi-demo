@@ -25,5 +25,16 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": "8080"
+    },
+    "functions": {
+      "port": "8081"
+    },
+    "ui": {
+      "enabled": false
+    }
   }
 }
