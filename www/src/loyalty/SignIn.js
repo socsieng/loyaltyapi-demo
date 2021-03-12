@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { executeWithStatusMessage } from '../utils/status-executor';
 import './Loyalty.css';
 
 function SignIn() {
@@ -7,29 +8,36 @@ function SignIn() {
   const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const [name, setName] = useState(query.get('name') ?? '');
   const [email, setEmail] = useState(query.get('email') ?? '');
+  const [statusMessage, setStatuMessage] = useState();
 
   async function submitHandler(event) {
     event.preventDefault();
-    const result = await fetch('/api/loyalty/jwt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-      }),
+
+    const [status] = await executeWithStatusMessage(async () => {
+      const result = await fetch('/api/loyalty/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      });
+
+      const details = await result.json();
+
+      window.location.href = `https://pay.google.com/gp/v/save/${details.token}`;
     });
 
-    const details = await result.json();
-
-    window.location.href = `https://pay.google.com/gp/v/save/${details.token}`;
+    setStatuMessage(status);
   }
 
   return (
     <div className="Loyalty">
       <section>
         <h1>Sign In</h1>
+        {statusMessage}
         <form onSubmit={submitHandler}>
           <fieldset>
             <label className="field">

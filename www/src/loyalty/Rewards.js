@@ -1,16 +1,27 @@
 import { useState } from 'react';
-import StatusMessages from '../StatusMessages';
+import { executeWithStatusMessage } from '../utils/status-executor';
 import './Loyalty.css';
 
 function Rewards() {
   const [email, setEmail] = useState('');
   const [points, setPoints] = useState(0);
-  const [statusMessages, setStatusMessages] = useState([]);
+  const [statusMessage, setStatuMessage] = useState();
+  const statusMessageOptions = {
+    success: result => (
+      <p>
+        Points successfully updated. View{' '}
+        <a href={`https://pay.google.com/gp/v/object/${result.id}`} target="_blank" rel="noreferrer">
+          loyalty pass
+        </a>
+        .
+      </p>
+    ),
+  };
 
   async function submitHandler(event) {
     event.preventDefault();
 
-    try {
+    const [status] = await executeWithStatusMessage(async () => {
       const result = await fetch(`/api/loyalty/${encodeURIComponent(email)}/points`, {
         method: 'POST',
         headers: {
@@ -21,37 +32,17 @@ function Rewards() {
         }),
       });
 
-      const details = await result.json();
-      setStatusMessages([
-        {
-          type: 'info',
-          message: (
-            <p>
-              Points successfully updated. View{' '}
-              <a href={`https://pay.google.com/gp/v/object/${details.id}`} target="_blank" rel="noreferrer">
-                loyalty pass
-              </a>
-              .
-            </p>
-          ),
-        },
-      ]);
-    } catch (err) {
-      setStatusMessages([
-        {
-          type: 'error',
-          message: <p>{err.message}</p>,
-        },
-      ]);
-      console.log(err);
-    }
+      return await result.json();
+    }, statusMessageOptions);
+
+    setStatuMessage(status);
   }
 
   return (
     <div className="Loyalty">
       <section>
         <h1>Update rewards points</h1>
-        <StatusMessages statuses={statusMessages} />
+        {statusMessage}
         <p>
           This page is used to update rewards points on a loyalty pass. This is used for demonstration purposes only.
           Under normal circumstances, an update to your customers' loyalty points would be triggered by either your

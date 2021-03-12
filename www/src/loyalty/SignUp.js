@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SignUpConfirmation from './SignUpConfirmation';
+import { executeWithStatusMessage } from '../utils/status-executor';
 import './Loyalty.css';
 
 function SignUp() {
@@ -10,26 +11,31 @@ function SignUp() {
   const [email, setEmail] = useState(query.get('email') ?? '');
   const [terms, setTerms] = useState(false);
   const [jwt, setJwt] = useState();
+  const [statusMessage, setStatuMessage] = useState();
 
   async function submitHandler(event) {
     event.preventDefault();
 
-    // Step 1: call our API to create a loyaltyObject
-    const result = await fetch('/api/loyalty/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-      }),
+    const [status] = await executeWithStatusMessage(async () => {
+      // Step 1: call our API to create a loyaltyObject
+      const result = await fetch('/api/loyalty/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      });
+
+      const details = await result.json();
+
+      // Step 2: set JWT based on API response
+      setJwt(details.token);
     });
 
-    const details = await result.json();
-
-    // Step 2: set JWT based on API response
-    setJwt(details.token);
+    setStatuMessage(status);
   }
 
   return (
@@ -39,6 +45,7 @@ function SignUp() {
       ) : (
         <section>
           <h1>Sign Up Form</h1>
+          {statusMessage}
           <form onSubmit={submitHandler}>
             <fieldset>
               <label className="field">
