@@ -3,17 +3,23 @@ const qs = require('querystring');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const config = require('./config');
-const { buildLoyaltyObject, updateLoyaltyPoints, getLoyaltyId } = require('./services/loyalty-service');
+const { createLoyaltyObject, updateLoyaltyPoints, getLoyaltyId } = require('./services/loyalty-service');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
 router.post('/sign-up', asyncHandler(signUp));
 router.post('/sign-in', asyncHandler(signIn));
-router.post('/jwt', asyncHandler(createJwt));
+router.post('/create', asyncHandler(createAccount));
 router.post('/:memberId/points', asyncHandler(updatePoints));
 
-function signUp(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+/**
+ * Handles the sign-up request from Google Pay Enrollment and Sign up
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+function signUp(req, res) {
   const { userProfile } = req.body;
   const jwt = JSON.parse(Buffer.from(userProfile, 'base64').toString('utf8'));
   const { firstName, lastName, email } = jwt;
@@ -26,7 +32,13 @@ function signUp(/** @type {express.Request} */ req, /** @type {express.Response}
   res.redirect(`/sign-up?${query}`);
 }
 
-function signIn(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+/**
+ * Handles the sign-in request from Google Pay Enrollment and Sign up
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+function signIn(req, res) {
   const { userProfile } = req.body;
   const jwt = JSON.parse(Buffer.from(userProfile, 'base64').toString('utf8'));
   const { email } = jwt;
@@ -38,28 +50,58 @@ function signIn(/** @type {express.Request} */ req, /** @type {express.Response}
   res.redirect(`/sign-in?${query}`);
 }
 
-function createJwt(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+/**
+ * Create a loyalty account and a save to Google Pay JWT
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+async function createAccount(req, res) {
+  // read credentials and website from configuration
   const { credentials, website } = config;
+
+  // read the name and email from the request body
   const { name, email } = req.body;
 
+  // typical implementation would verify email
+  // and save loyalty details to your back-end
+
+  // Step 1: create a loyalty object
+  const loyaltyObject = await createLoyaltyObject(name, email, 0);
+
+  // Step 2: define jwt claims
   const claims = {
     aud: 'google',
     origins: [website],
     iss: credentials.client_email,
-    iat: Math.floor(new Date().valueOf() / 1000),
     typ: 'savetowallet',
     payload: {
-      loyaltyObjects: [buildLoyaltyObject(name, email, '0')],
+      loyaltyObjects: [
+        {
+          id: loyaltyObject.id,
+        },
+      ],
     },
   };
+
+  // Step 3: create and sign jwt
   const token = jwt.sign(claims, credentials.private_key, { algorithm: 'RS256' });
 
-  res.send({
+  // Step 4: return the token
+  // throw new Error('Not implemented');
+  res.json({
     token,
+    saveUrl: `https://pay.google.com/gp/v/save/${token}`,
   });
 }
 
-async function updatePoints(/** @type {express.Request} */ req, /** @type {express.Response} */ res) {
+/**
+ * Updates loyalty points
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+async function updatePoints(req, res) {
   const { memberId } = req.params;
   const { points } = req.body;
   await updateLoyaltyPoints(memberId, points);

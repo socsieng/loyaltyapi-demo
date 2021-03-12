@@ -19,6 +19,7 @@
     "express-async-handler": "^1.1.4",
     "firebase-admin": "^9.2.0",
     "firebase-functions": "^3.11.0",
+    "gaxios": "^4.2.0",
     "google-auth-library": "^7.0.2",
     "jsonwebtoken": "^8.5.1"
   },

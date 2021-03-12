@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import SignUpConfirmation from './SignUpConfirmation';
 import './Loyalty.css';
-import SaveToGooglePayButton from './SaveToGooglePayButton';
 
 function SignUp() {
   const location = useLocation();
@@ -10,11 +10,12 @@ function SignUp() {
   const [email, setEmail] = useState(query.get('email') ?? '');
   const [terms, setTerms] = useState(false);
   const [jwt, setJwt] = useState();
-  const shouldRedirect = query.get('source') === 'discoverable';
 
   async function submitHandler(event) {
     event.preventDefault();
-    const result = await fetch('/api/loyalty/jwt', {
+
+    // TODO: call the create jwt API
+    const result = await fetch('/api/loyalty/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,32 +28,13 @@ function SignUp() {
 
     const details = await result.json();
 
-    if (shouldRedirect) {
-      window.location.href = `https://pay.google.com/gp/v/save/${details.token}`;
-    } else {
-      setJwt(details.token);
-    }
+    setJwt(details.token);
   }
 
   return (
     <div className="Loyalty">
       {jwt ? (
-        <section>
-          <h1>Confirmation</h1>
-          <p>
-            This confirmation screen is for demonstration purposes only. The recommendation is to send the user a
-            confirmation email with a link to Save to Google Pay. One additional benefit of doing this is that the
-            user's email address can also be verified.
-          </p>
-          <SaveToGooglePayButton jwt={jwt} />
-          <p>
-            In the confirmation email, include the{' '}
-            <a href={`https://pay.google.com/gp/v/save/${jwt}`} target="_blank" rel="noreferrer">
-              Save to Google Pay
-            </a>{' '}
-            link instead of the Save to Google Pay button.
-          </p>
-        </section>
+        <SignUpConfirmation jwt={jwt} />
       ) : (
         <section>
           <h1>Sign Up Form</h1>

@@ -43,6 +43,7 @@ function Rewards() {
           message: <p>{err.message}</p>,
         },
       ]);
+      console.log(err);
     }
   }
 

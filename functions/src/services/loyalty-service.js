@@ -1,16 +1,5 @@
-const { GoogleAuth } = require('google-auth-library');
 const config = require('../config');
-
-async function getPassesClient() {
-  const authOptions = {
-    scopes: 'https://www.googleapis.com/auth/wallet_object.issuer',
-  };
-
-  authOptions.credentials = config.credentials;
-
-  const auth = new GoogleAuth(authOptions);
-  return await auth.getClient();
-}
+const PassesClient = require('../passes-client');
 
 function getLoyaltyId(memberId) {
   const { issuerId, loyaltyProgram } = config;
@@ -18,77 +7,73 @@ function getLoyaltyId(memberId) {
   return `${issuerId}.${memberId.replace(/@/g, '_at_').replace(/[^\w.-]/g, '_')}-${loyaltyProgram}`;
 }
 
-function buildLoyaltyObject(name, email, points) {
-  const { issuerId, loyaltyProgram } = config;
-  const memberId = email;
+/**
+ * Creates and posts a loyaltyObject
+ *
+ * @param {string} name
+ * @param {string} email
+ * @param {number} points
+ * @return {Promise<object>} loyaltyObject
+ */
+async function createLoyaltyObject(name, email, points) {
+  const client = new PassesClient();
 
-  return {
-    id: getLoyaltyId(memberId),
+  // read issuerId and loyalty program from config
+  const { issuerId, loyaltyProgram } = config;
+
+  // Step 1: construct loyaltyObject
+  const loyaltyObject = {
+    id: getLoyaltyId(email),
     classId: `${issuerId}.${loyaltyProgram}`,
-    accountId: memberId,
+    accountId: email,
     accountName: name,
     state: 'active',
-    barcode: {
-      alternateText: email,
-      type: 'qrCode',
-      value: email,
-    },
-    infoModuleData: {
-      labelValueRows: [
-        {
-          columns: [
-            {
-              value: name,
-              label: 'Name',
-            },
-            {
-              value: memberId,
-              label: 'Email',
-            },
-          ],
-        },
-      ],
-      showLastUpdateTime: 'false',
-    },
     loyaltyPoints: {
       balance: {
-        string: points,
+        int: points,
       },
       label: 'Points',
     },
-    textModulesData: [
-      {
-        body: 'New member',
-        header: 'Reward status',
-      },
-    ],
+    barcode: {
+      type: 'qrCode',
+      value: email,
+    },
   };
+
+  // Step 2: insert the loyaltyObject
+  await client.postIfNotFound(
+    'https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject',
+    loyaltyObject,
+    loyaltyObject.id,
+  );
+
+  return loyaltyObject;
 }
 
-async function updateLoyaltyPoints(memberId, points) {
-  const client = await getPassesClient();
-  const loyaltyId = getLoyaltyId(memberId);
+/**
+ * Updates the points for a loyaltyObject identified by an email address
+ *
+ * @param {string} email
+ * @param {number} points
+ */
+async function updateLoyaltyPoints(email, points) {
+  const client = new PassesClient();
+  const loyaltyId = getLoyaltyId(email);
 
-  await client.request({
-    url: `https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/${loyaltyId}`,
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      id: loyaltyId,
-      loyaltyPoints: {
-        balance: {
-          string: points,
-        },
-        label: 'Points',
+  // Step 1: update loyaltyPoints for the loyaltyObject identified by loyaltyId
+  await client.patch(`https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/${loyaltyId}`, {
+    id: loyaltyId,
+    loyaltyPoints: {
+      balance: {
+        int: points,
       },
-    }),
+      label: 'Points',
+    },
   });
 }
 
 module.exports = {
-  buildLoyaltyObject,
+  createLoyaltyObject,
   getLoyaltyId,
   updateLoyaltyPoints,
 };
