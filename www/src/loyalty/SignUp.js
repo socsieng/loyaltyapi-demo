@@ -14,7 +14,7 @@ function SignUp() {
   async function submitHandler(event) {
     event.preventDefault();
 
-    // TODO: call the create jwt API
+    // Step 1: call our API to create a loyaltyObject
     const result = await fetch('/api/loyalty/create', {
       method: 'POST',
       headers: {
@@ -28,6 +28,7 @@ function SignUp() {
 
     const details = await result.json();
 
+    // Step 2: set JWT based on API response
     setJwt(details.token);
   }
 
