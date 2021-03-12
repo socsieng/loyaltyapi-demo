@@ -67,7 +67,6 @@ async function updateLoyaltyPoints(email, points) {
       balance: {
         int: points,
       },
-      label: 'Points',
     },
   });
 }
