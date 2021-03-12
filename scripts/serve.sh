@@ -44,4 +44,4 @@ then
   echo -e "${YELLOW}WARNING:${NONE} LOYALTY_WEBSITE environment variable is empty"
 fi
 
-firebase emulators:start
+firebase emulators:start --project=fake-project
