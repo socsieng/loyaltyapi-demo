@@ -26,7 +26,7 @@ function signUp(req, res) {
   const query = qs.stringify({
     name: [firstName, lastName].filter(n => n).join(' '),
     email,
-    source: 'discoverable',
+    mode: 'redirect',
   });
 
   res.redirect(`/sign-up?${query}`);
@@ -44,7 +44,7 @@ function signIn(req, res) {
   const { email } = jwt;
   const query = qs.stringify({
     email,
-    source: 'discoverable',
+    mode: 'redirect',
   });
 
   res.redirect(`/sign-in?${query}`);
