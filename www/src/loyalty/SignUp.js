@@ -31,6 +31,12 @@ function SignUp() {
 
       const details = await result.json();
 
+      // Step 3: redirect users to google pay if in redirect mode
+      if (query.get('mode') === 'redirect') {
+        window.location.href = `https://pay.google.com/gp/v/save/${details.token}`;
+        return;
+      }
+
       // Step 2: set JWT based on API response
       setJwt(details.token);
     });
