@@ -16,7 +16,7 @@
     "url": "git+https://github.com/google-pay/gpay-loyaltyapi-demo.git"
   },
   "author": "socsieng",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/google-pay/gpay-loyaltyapi-demo/issues"
   },
