@@ -15,6 +15,7 @@
  */
 
 import './Loyalty.css';
+import SaveToGooglePayButton from '@google-pay/save-button-react';
 
 function SignUpConfirmation({ jwt }) {
   return (
@@ -28,9 +29,11 @@ function SignUpConfirmation({ jwt }) {
         </p>
 
         {/* Step 1: add save to google pay link */}
-        <a href={`https://pay.google.com/gp/v/save/${jwt}`} target="_blank" rel="noreferrer">
+        {/* <a href={`https://pay.google.com/gp/v/save/${jwt}`} target="_blank" rel="noreferrer">
           Save to Google Pay
-        </a>
+        </a> */}
+
+        <SaveToGooglePayButton jwt={jwt} theme="light" height="standard" />
       </section>
     </div>
   );
