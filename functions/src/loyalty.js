@@ -74,7 +74,7 @@ function signIn(req, res) {
  */
 async function createAccount(req, res) {
   // read credentials and website from configuration
-  const { credentials, website } = config;
+  const { credentials, website } = getConfig(req);
 
   // read the name and email from the request body
   const { name, email } = req.body;
@@ -126,6 +126,18 @@ async function updatePoints(req, res) {
     id: getLoyaltyId(memberId),
     memberId,
     points,
+  });
+}
+
+/**
+ * Reads configuration from the configuration object and incoming request
+ *
+ * @param {express.Request} req
+ * @return {Object} configuration
+ */
+function getConfig(req) {
+  return Object.assign({}, config, {
+    website: config.website || req.headers.origin,
   });
 }
 
