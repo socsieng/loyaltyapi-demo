@@ -59,6 +59,7 @@ async function updateLoyaltyPoints(email, points) {
   const loyaltyObject = {};
 
   // Step 2: call REST API to update points
+  throw new Error('Not implemented');
 }
 
 module.exports = {
