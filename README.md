@@ -24,11 +24,6 @@ MY_PROJECT=my-google-cloud-project-id
 # one off setup step
 scripts/setup.sh
 
-# configure firebase
-firebase login
-firebase projects:addfirebase $MY_PROJECT
-firebase use $MY_PROJECT
-
 # serve firebase application
 scripts/serve.sh
 
@@ -44,14 +39,24 @@ Configuration involves the following steps:
 2. Create and download the service account key
 3. Enable the Google Pay Passes API
 
-For convenience, a script is included in this repository that will automate the creation of the service account and
-service account key (note that [`gcloud` Google Cloud SDK][install_gcloud] must be installed for the script to work).
+For convenience, some scripts have been included in this repository that will automate the creation of the service
+account and service account key (note that [`gcloud` Google Cloud SDK][install_gcloud] must be installed for the script
+to work).
 
 ```sh
-# usage: scripts/service-account-key.sh <project-id> [folder-id]
+# replace my-google-cloud-project-id with your target cloud project id
+# sets up MY_PROJECT variable to be used in other commands
+MY_PROJECT="my-google-cloud-project-id"
 
+# usage: scripts/service-account-key.sh <project-id> [folder-id]
 # example
-scripts/service-account-key.sh my-google-cloud-project-id
+scripts/service-account-key.sh $MY_PROJECT
+
+# enable passes api
+scripts/enable-api.sh $MY_PROJECT
+
+# tell the application where to find your key
+export GCP_CREDENTIALS=`realpath ./key.json`
 ```
 
 ### [Google Cloud Console][gcp_console]
