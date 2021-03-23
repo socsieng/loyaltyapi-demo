@@ -53,9 +53,4 @@ then
   echo -e "${YELLOW}WARNING:${NONE} GOOGLE_PAY_ISSUER_ID environment variable is empty"
 fi
 
-if [ -z "$LOYALTY_WEBSITE" ]
-then
-  echo -e "${YELLOW}WARNING:${NONE} LOYALTY_WEBSITE environment variable is empty"
-fi
-
 firebase emulators:start --project=fake-project
