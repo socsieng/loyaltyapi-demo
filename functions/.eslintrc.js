@@ -26,6 +26,7 @@ module.exports = {
   extends: ['eslint:recommended', 'google', 'prettier'],
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
+    'no-unused-vars': 'warn',
     'require-jsdoc': 'off',
     'quotes': ['error', 'single'],
   },
