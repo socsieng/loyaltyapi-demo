@@ -23,8 +23,8 @@ import './Loyalty.css';
 function SignUp() {
   const location = useLocation();
   const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const [name, setName] = useState(query.get('name') ?? '');
-  const [email, setEmail] = useState(query.get('email') ?? '');
+  const [name, setName] = useState(query.get('name') || '');
+  const [email, setEmail] = useState(query.get('email') || '');
   const [terms, setTerms] = useState(false);
   const [jwt, setJwt] = useState();
   const [statusMessage, setStatuMessage] = useState();

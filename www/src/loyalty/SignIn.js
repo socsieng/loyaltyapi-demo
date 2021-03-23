@@ -22,8 +22,8 @@ import './Loyalty.css';
 function SignIn() {
   const location = useLocation();
   const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const [name, setName] = useState(query.get('name') ?? '');
-  const [email, setEmail] = useState(query.get('email') ?? '');
+  const [name, setName] = useState(query.get('name') || '');
+  const [email, setEmail] = useState(query.get('email') || '');
   const [statusMessage, setStatuMessage] = useState();
 
   async function submitHandler(event) {
