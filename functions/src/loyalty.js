@@ -24,6 +24,7 @@ const { createLoyaltyObject, updateLoyaltyPoints, getLoyaltyId } = require('./se
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
+// Register API routes (prefix: /api/loyalty)
 router.post('/sign-up', asyncHandler(signUp));
 router.post('/sign-in', asyncHandler(signIn));
 router.post('/create', asyncHandler(createAccount));
