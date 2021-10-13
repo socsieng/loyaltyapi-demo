@@ -38,9 +38,30 @@ async function createLoyaltyObject(name, email, points) {
   const { issuerId, loyaltyProgram } = config;
 
   // Step 1: construct loyaltyObject
-  const loyaltyObject = {};
+  const loyaltyObject = {
+    id: getLoyaltyId(email),
+    classId: `${issuerId}.${loyaltyProgram}`,
+    accountId: email,
+    accountName: name,
+    state: 'active',
+    loyaltyPoints: {
+      balance: {
+        int: points,
+      },
+      label: 'Points',
+    },
+    barcode: {
+      type: 'qrCode',
+      value: email,
+    },
+  };
 
   // Step 2: insert the loyaltyObject
+  await client.postIfNotFound(
+    'https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject',
+    loyaltyObject,
+    loyaltyObject.id,
+  );
 
   return loyaltyObject;
 }
@@ -56,10 +77,17 @@ async function updateLoyaltyPoints(email, points) {
   const loyaltyId = getLoyaltyId(email);
 
   // Step 1: define fields that require updating
-  const loyaltyObject = {};
+  const loyaltyObject = {
+    id: loyaltyId,
+    loyaltyPoints: {
+      balance: {
+        int: points,
+      },
+    },
+  };
 
   // Step 2: call REST API to update points
-  throw new Error('Not implemented');
+  await client.patch(`https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/${loyaltyId}`, loyaltyObject);
 }
 
 module.exports = {

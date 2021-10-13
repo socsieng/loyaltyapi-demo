@@ -84,13 +84,31 @@ async function createAccount(req, res) {
   // and save loyalty details to your back-end
 
   // Step 1: create a loyalty object
+  const loyaltyObject = await createLoyaltyObject(name, email, 0);
 
   // Step 2: define jwt claims
+  const claims = {
+    aud: 'google',
+    origins: [website],
+    iss: credentials.client_email,
+    typ: 'savetowallet',
+    payload: {
+      loyaltyObjects: [
+        {
+          id: loyaltyObject.id,
+        },
+      ],
+    },
+  };
 
   // Step 3: create and sign jwt
+  const token = jwt.sign(claims, credentials.private_key, { algorithm: 'RS256' });
 
   // Step 4: return the token
-  throw new Error('Not implemented');
+  res.json({
+    token,
+    saveUrl: `https://pay.google.com/gp/v/save/${token}`,
+  });
 }
 
 /**

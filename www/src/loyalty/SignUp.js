@@ -34,11 +34,27 @@ function SignUp() {
 
     const [status] = await executeWithStatusMessage(async () => {
       // Step 1: call our API to create a loyaltyObject
-      const result = await fetch(/* ... */);
+      const result = await fetch('/api/loyalty/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      });
+
+      const details = await result.json();
 
       // Step 3: redirect users to google pay if in redirect mode
+      if (query.get('mode') === 'redirect') {
+        window.location.href = `https://pay.google.com/gp/v/save/${details.token}`;
+        return;
+      }
 
       // Step 2: set JWT based on API response
+      setJwt(details.token);
     });
 
     setStatuMessage(status);
