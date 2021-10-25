@@ -69,3 +69,8 @@ credentials.json
 key.json
 
 .DS_Store
+
+certs/
+*.csr
+*.key
+*.pkpass
